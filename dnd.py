@@ -5,16 +5,13 @@ import random
 
 class playerChar():
 	
+	# PlayerChar based on "Fighter" class - D&D 4e Player's Handbook
 	def __init__(self, name):
 		self.name = name
 		self.level = 1
 		self.exp = 0
 		
-		# Leveling calculations
-		
-		
-		# Ability Scores: Randomly generated, 
-		# if (AbilityScore < 8) then + 5
+		# Ability Scores: Randomly generated, between 10 - 20
 		self.str = rollDice(11) + 9
 		self.con = rollDice(11) + 9
 		self.dex = rollDice(11) + 9
@@ -35,11 +32,11 @@ class playerChar():
 		# Defenses		
 		self.ac = 10 + (self.level / 2) + self.strMod
 		
-		# Fortitude modifier equation
+		# Fortitude modifier equation, + 2 for "Fighter" class
 		if (self.strMod >= self.conMod):
-			self.fort = 10 + (self.level / 2) + self.strMod
+			self.fort = 10 + (self.level / 2) + self.strMod + 2
 		else:
-			self.fort = 10 + (self.level / 2) + self.conMod
+			self.fort = 10 + (self.level / 2) + self.conMod + 2
 			
 			
 		# Reflex modifier equation
@@ -58,7 +55,29 @@ class playerChar():
 		
 		# Initiative
 		self.init = self.dexMod + (self.level / 2)
-
+		
+		
+		# Health
+		self.hp = 15 + self.con + (6 * self.level)
+	
+	
+	def resetHP(self):
+		self.hp = 15 + self.con + (6 * self.level)
+	
+	
+	# Leveling calculations, maximum level of 5
+	def seeLevel(self):
+		if ((self.exp > 999) and (self.exp < 2250)):
+			self.level = 2
+		elif ((self.exp > 2249) and (self.exp < 3750)):
+			self.level = 3
+		elif ((self.exp > 3749) and (self.exp < 5500)):
+			self.level = 4
+		elif ((self.exp > 5499)):
+			self.level = 5
+		else:
+			self.level = 1
+		return self.level
 	
 	# Roll initiative
 	def rollInit(self, dexMod):
@@ -67,10 +86,6 @@ class playerChar():
 	# Return character name
 	def getName(self):
 		return self.name
-		
-	def talk(self):
-		print "I am player"
-
 
 	
 class mob():
@@ -95,7 +110,9 @@ class wererat(mob):
 
 	def __init__(self):
 	
+		self.hp = 48
 		self.init = rollDice(20) + 7
+		self.exp = 150
 		
 		# Ability Scores
 		self.str = 10
@@ -119,20 +136,38 @@ class wererat(mob):
 		self.ref = 16
 		self.will = 13
 		
-		
-	def talk(self):
-		print "I am wererat"	
+	
+	def attack(self):
+		print "Wererat uses its short sword!"
+		attackRoll = rollDice(20) + 8
+		return attackRoll
+	
+	
+	def damage(self):
+		damageRoll = rollDice(6) + 4
+		return damageRoll
 
 		
 # Add 1 to max randrange for correct effect
 def rollDice(number):
 	return random.randrange(1, number + 1)
 
+	
+def combat(attacker, defender):
+	if (attacker.attack() > defender.ac):
+		damage = attacker.damage()
+		print "The attack hits!"
+		print str(defender.name) + " takes " + str(damage) + " damage!"
+		defender.hp -= damage
+		print "HP: " + str(defender.hp)
+	else:
+		print "The attack misses!"
+	
 
 name = raw_input("Enter your character's name: ")
 player = playerChar(name)
 
-print "\t------------------- Printing character stats -------------------"
+"""print "\t------------------- Printing character stats -------------------"
 print "\t-------------------- For " + player.name + " -------------------"
 
 print "Player str: " + str(getattr(player, 'str'))
@@ -152,3 +187,14 @@ print "Player wis MOD: " + str(getattr(player, 'wisMod'))
 
 print "Player cha: " + str(getattr(player, 'cha'))
 print "Player cha MOD: " + str(getattr(player, 'chaMod'))
+
+print "EXP / LVL increased by 2250."
+str(setattr(player, 'exp', 2250))
+print "Player exp: " + str(getattr(player, 'exp'))
+print "Player level: " + str(player.seeLevel()) """
+
+# console = raw_input("> ")
+
+player.resetHP()
+rat1 = wererat()
+combat(rat1, player)
