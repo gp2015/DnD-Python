@@ -54,7 +54,7 @@ class playerChar():
 		
 		
 		# Initiative
-		self.init = self.dexMod + (self.level / 2)
+		self.init = self.dexMod + (self.seeLevel() / 2)
 		
 		
 		# Health
@@ -78,15 +78,44 @@ class playerChar():
 		else:
 			self.level = 1
 		return self.level
-	
+
+		
 	# Roll initiative
 	def rollInit(self, dexMod):
 		return rollDice(20) + self.init
-		
+	
+	
 	# Return character name
 	def getName(self):
 		return self.name
+	
+	
+	def getStats(self):
+		print "\t------------------- " + player.name + " Character Sheet -------------------"
+		print "STR: " + str(getattr(player, 'str'))
+		print "STR MOD: " + str(getattr(player, 'strMod'))
 
+		print "CON: " + str(getattr(player, 'con'))
+		print "CON MOD: " + str(getattr(player, 'conMod'))
+
+		print "DEX: " + str(getattr(player, 'dex'))
+		print "DEX MOD: " + str(getattr(player, 'dexMod'))
+
+		print "INT: " + str(getattr(player, 'int'))
+		print "INT MOD: " + str(getattr(player, 'intMod'))
+
+		print "WIS: " + str(getattr(player, 'wis'))
+		print "WIS MOD: " + str(getattr(player, 'wisMod'))
+
+		print "CHA: " + str(getattr(player, 'cha'))
+		print "CHA MOD: " + str(getattr(player, 'chaMod'))
+
+		print "XP: " + str(getattr(player, 'xp'))
+		print "level: " + str(player.seeLevel())
+		print "HP: " + str(getattr(player, 'HP'))
+		print "Init MOD: " + str(getattr(player, 'init'))
+		print "\t------------------- " + player.name + " Character Sheet -------------------"
+	
 	
 class mob():
 	
@@ -200,35 +229,10 @@ def combat(attacker, defender):
 name = raw_input("Enter your character's name: ")
 player = playerChar(name)
 
-"""print "\t------------------- Printing character stats -------------------"
-print "\t-------------------- For " + player.name + " -------------------"
-
-print "Player str: " + str(getattr(player, 'str'))
-print "Player str MOD: " + str(getattr(player, 'strMod'))
-
-print "Player con: " + str(getattr(player, 'con'))
-print "Player con MOD: " + str(getattr(player, 'conMod'))
-
-print "Player dex: " + str(getattr(player, 'dex'))
-print "Player dex MOD: " + str(getattr(player, 'dexMod'))
-
-print "Player int: " + str(getattr(player, 'int'))
-print "Player int MOD: " + str(getattr(player, 'intMod'))
-
-print "Player wis: " + str(getattr(player, 'wis'))
-print "Player wis MOD: " + str(getattr(player, 'wisMod'))
-
-print "Player cha: " + str(getattr(player, 'cha'))
-print "Player cha MOD: " + str(getattr(player, 'chaMod'))
-
-print "EXP / LVL increased by 2250."
-str(setattr(player, 'exp', 2250))
-print "Player exp: " + str(getattr(player, 'exp'))
-print "Player level: " + str(player.seeLevel()) """
-
 # console = raw_input("> ")
 
 print player.HP
 player.resetHP()
 werewolf1 = werewolf()
 combat(werewolf1, player)
+player.getStats()
