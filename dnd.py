@@ -9,7 +9,7 @@ class playerChar():
 	def __init__(self, name):
 		self.name = name
 		self.level = 1
-		self.exp = 0
+		self.xp = 0
 		
 		# Ability Scores: Randomly generated, between 10 - 20
 		self.str = rollDice(11) + 9
@@ -58,22 +58,22 @@ class playerChar():
 		
 		
 		# Health
-		self.hp = 15 + self.con + (6 * self.level)
+		self.HP = 15 + self.con + (6 * self.level)
 	
 	
 	def resetHP(self):
-		self.hp = 15 + self.con + (6 * self.level)
+		self.HP = 15 + self.con + (6 * self.level)
 	
 	
 	# Leveling calculations, maximum level of 5
 	def seeLevel(self):
-		if ((self.exp > 999) and (self.exp < 2250)):
+		if ((self.xp > 999) and (self.xp < 2250)):
 			self.level = 2
-		elif ((self.exp > 2249) and (self.exp < 3750)):
+		elif ((self.xp > 2249) and (self.xp < 3750)):
 			self.level = 3
-		elif ((self.exp > 3749) and (self.exp < 5500)):
+		elif ((self.xp > 3749) and (self.xp < 5500)):
 			self.level = 4
-		elif ((self.exp > 5499)):
+		elif ((self.xp > 5499)):
 			self.level = 5
 		else:
 			self.level = 1
@@ -100,19 +100,52 @@ class mob():
 class werewolf(mob):
 
 	def __init__(self):
-		pass
+	
+		self.HP = 108
+		self.init = rollDice(20) + 7
+		self.xp = 350
 		
-	def talk(self):
-		print "I am werewolf"	
+		# Ability Scores
+		self.str = 19
+		self.con = 18
+		self.dex = 16
+		self.int = 10	
+		self.wis = 14	
+		self.cha = 11
+		
+		# Ability Modifiers
+		self.strMod = 8
+		self.conMod = 8
+		self.dexMod = 7
+		self.intMod = 4
+		self.wisMod = 6
+		self.chaMod = 4
+		
+		# Defenses
+		self.ac = 20
+		self.fort = 20
+		self.ref = 19
+		self.will = 18
+		
+	
+	def attack(self):
+		print "Werewolf uses its greatclub!"
+		attackRoll = rollDice(20) + 12
+		return attackRoll
+	
+	
+	def damage(self):
+		damageRoll = rollDice(4) + rollDice(4) + 4
+		return damageRoll
 	
 	
 class wererat(mob):
 
 	def __init__(self):
 	
-		self.hp = 48
+		self.HP = 48
 		self.init = rollDice(20) + 7
-		self.exp = 150
+		self.xp = 150
 		
 		# Ability Scores
 		self.str = 10
@@ -158,8 +191,8 @@ def combat(attacker, defender):
 		damage = attacker.damage()
 		print "The attack hits!"
 		print str(defender.name) + " takes " + str(damage) + " damage!"
-		defender.hp -= damage
-		print "HP: " + str(defender.hp)
+		defender.HP -= damage
+		print "HP: " + str(defender.HP)
 	else:
 		print "The attack misses!"
 	
@@ -195,6 +228,7 @@ print "Player level: " + str(player.seeLevel()) """
 
 # console = raw_input("> ")
 
+print player.HP
 player.resetHP()
-rat1 = wererat()
-combat(rat1, player)
+werewolf1 = werewolf()
+combat(werewolf1, player)
