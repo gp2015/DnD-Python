@@ -3,7 +3,7 @@
 import math
 import random
 
-class playerChar():
+class playerChar(): # Create characters classes as "class" - let player pick class
 	
 	# PlayerChar based on "Fighter" class - D&D 4e Player's Handbook
 	def __init__(self, name):
@@ -115,6 +115,10 @@ class playerChar():
 		print "HP: " + str(getattr(player, 'HP'))
 		print "Init MOD: " + str(getattr(player, 'init'))
 		print "\t------------------- " + player.name + " Character Sheet -------------------"
+	
+	
+# Create character "class" classes!
+# use mob class
 	
 	
 class mob():
